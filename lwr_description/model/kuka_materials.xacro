@@ -3,7 +3,7 @@
   <material name="Kuka/DarkGrey">
     <color rgba="0.3 0.3 0.3 1.0"/>
   </material>
-  
+
   <material name="Kuka/LightGrey">
     <color rgba="0.8 0.8 0.8 1.0"/>
   </material>
@@ -29,7 +29,7 @@
   </material>
 
   <material name="Kuka/Blue">
-    <color rgba="0.0 0.0 0.8 1.0"/>
+    <color rgba="0.1 0.4 0.6 1.0"/>
   </material>
 
 </robot>

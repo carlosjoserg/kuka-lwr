@@ -7,7 +7,7 @@ DEF ros_control( )
   ;FOLD BASISTECH INI
 
     GLOBAL INTERRUPT DECL 3 WHEN $STOPMESS==TRUE DO IR_STOPM ( )
-    INTERRUPT ON 3 
+    INTERRUPT ON 3
     BAS (#INITMOV,0 )
   ;ENDFOLD (BASISTECH INI)
   ;FOLD USER INI
@@ -19,7 +19,7 @@ DEF ros_control( )
   ;-----------------------------------------------
   ; KRL script to be used with the pkgs in
   ; https://github.com/CentroEPiaggio/kuka-lwr
-  ; 
+  ;
   ; Author: Carlos J. Rosales, cjrosales@gmail.com
   ;-----------------------------------------------
 ;ENDFOLD (Contact information)
@@ -33,18 +33,18 @@ DEF ros_control( )
   ; $FRI_FRM_INT[1]
   ; This value is used to read from the remote
   ; the desired control strategy, i.e.
-  ; 
+  ;
   ; 10 -> joint position control
-  ; 20 -> Cartesian impedance control 
-  ; 30 -> joint impedance control 
-  ; 
+  ; 20 -> Cartesian impedance control
+  ; 30 -> joint impedance control
+  ;
   ; An stopFRI() - setToKRLInt(0, $) - startFRI()
   ; sequence must be performed in the remote.
   ; ----------------------------------------------
   ; $FRI_FRM_INT[2]
   ; This value is used to call friStart() or
   ; friStop() from the remote
-  ; 
+  ;
   ; 1 -> to call friStart()
   ; 0 -> to call fiStop()
   ; ----------------------------------------------
@@ -92,10 +92,10 @@ DEF ros_control( )
 ;ENDFOLD (init)
 
 ;Input correct tool number here and restart
-BAS (#tool,1 )
+BAS (#tool,9 )
 
 ;Specify ip and port
-retVal = friSetup("192.168.0.150", 49939, 49939)
+retVal = friSetup("192.168.0.50", 49939, 49939)
 
 ;Open FRI with datarate 2 msec
 retVal=friOpen(2)

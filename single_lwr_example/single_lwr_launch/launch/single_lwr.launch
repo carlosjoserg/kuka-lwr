@@ -1,16 +1,16 @@
 <launch>
 	<!-- LAUNCH INTERFACE -->
-	
+
 	<!-- in case you have different robot configurations -->
 	<arg name="robot_name" default="single_lwr_robot"/>
 
 	<!-- the default is the simulator -->
-	<arg name="use_lwr_sim" default="true"/>
-	
+	<arg name="use_lwr_sim" default="false"/>
+
 	<!-- set the parameters for the real interface -->
-	<arg name="lwr_powered" default="false"/>
+	<arg name="lwr_powered" default="true"/>
 	<arg name="port" default="49939"/>
-	<arg name="ip" default="192.168.0.10"/>
+	<arg name="ip" default="192.168.0.21"/>
 	<arg name="file" default="$(find single_lwr_robot)/config/980241-FRI-Driver.init"/>
 
 	<arg name="t1_limits" default="false"/>
@@ -28,13 +28,13 @@
 
 	<!-- the urdf/sdf parameter -->
 	<param name="robot_description" command="$(find xacro)/xacro --inorder $(find single_lwr_robot)/robot/$(arg robot_name).urdf.xacro"/>
-	
+
 	<!-- joint and robot state publishers of the full robot description -->
 	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
 		<rosparam param="source_list">[/lwr/joint_states]</rosparam>
 	</node>
 	<node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
-	
+
 	<group if="$(arg use_rviz)">
 		<node name="lwr_rviz" pkg="rviz" type="rviz" respawn="false" args="-d $(find single_lwr_launch)/launch/rviz_config.rviz" output="screen"/>
 	</group>
@@ -59,7 +59,7 @@
 	<!-- load moveit configuration -->
 	<group if="$(arg load_moveit)">
 		<include file="$(find single_lwr_moveit)/launch/move_group.launch">
-			<arg name="allow_trajectory_execution" value="true"/>  
+			<arg name="allow_trajectory_execution" value="true"/>
 			<arg name="fake_execution" value="false"/>
 			<arg name="info" value="true"/>
 			<arg name="debug" value="false"/>
@@ -71,7 +71,7 @@
 			<arg name="debug" value="false"/>
 		</include>
 	</group>
-	
+
 	<!-- Load updated joint limits (override information from single_lwr_moveit) to respect T1 mode limits -->
 	<group if="$(arg t1_limits)" ns="robot_description_planning">
 		<rosparam command="load" file="$(find single_lwr_robot)/config/t1_joint_limits.yaml"/>
@@ -100,7 +100,7 @@
 		</group>
 
 		<!-- spawn only desired controllers in current namespace -->
-		<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"  args="joint_state_controller arm_state_controller $(arg controllers) --shutdown-timeout 2"/>
+		<node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen"  args="joint_state_controller $(arg controllers) --shutdown-timeout 2"/>
 
 		<node name="controller_stopper" pkg="controller_manager" type="spawner" args="--stopped $(arg stopped_controllers) --shutdown-timeout 2" />
 
